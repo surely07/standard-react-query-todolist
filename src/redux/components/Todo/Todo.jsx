@@ -15,7 +15,7 @@ import {
   useRemoveMutation,
   useSwitchMutation,
 } from "../../../query/useTodosQuery";
-import { QUERY_KEY } from "../../../query/keys.constant";
+import { QUERY_KEYS } from "../../../query/keys.constant";
 
 /**
  * 컴포넌트 개요 : 메인 > TODOLIST > TODO. 할 일의 단위 컴포넌트
@@ -40,16 +40,8 @@ function Todo({ todo, isActive }) {
   //   },
   // });
 
-  const { mutate: deleteMutate } = useRemoveMutation({
-    onSuccess: () => {
-      queryClient.invalidateQueries(QUERY_KEY);
-    },
-  });
-  const { mutate: switchMutate } = useSwitchMutation({
-    onSuccess: () => {
-      queryClient.invalidateQueries(QUERY_KEY);
-    },
-  });
+  const { mutate: deleteMutate } = useRemoveMutation();
+  const { mutate: switchMutate } = useSwitchMutation();
 
   // hooks
   const navigate = useNavigate();
@@ -61,12 +53,20 @@ function Todo({ todo, isActive }) {
       isDone: !todo.isDone,
     };
     console.log(todo.id, !todo.isDone);
-    switchMutate(payload);
+    switchMutate(payload, {
+      onSuccess: () => {
+        queryClient.invalidateQueries(QUERY_KEYS);
+      },
+    });
   };
 
   // [삭제] 버튼 선택 시 호출되는 함수(user의 confirmation 필요)
   const handleRemoveButton = () => {
-    deleteMutate(todo.id);
+    deleteMutate(todo.id, {
+      onSuccess: () => {
+        queryClient.invalidateQueries(QUERY_KEYS);
+      },
+    });
   };
 
   // [상세보기]를 선택하는 경우 이동하는 함수

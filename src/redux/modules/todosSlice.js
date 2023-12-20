@@ -1,8 +1,8 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { QUERY_KEY } from "../../query/keys.constant";
+import { QUERY_KEYS } from "../../query/keys.constant";
 
 const todosSlice = createSlice({
-  name: QUERY_KEY,
+  name: QUERY_KEYS,
   initialState: {},
   reducers: {},
 });

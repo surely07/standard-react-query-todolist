@@ -8,7 +8,7 @@ import "./styles";
 import { StyledDiv } from "./styles";
 import { useQueryClient } from "react-query";
 import { useAddMutation } from "../../../query/useTodosQuery";
-import { QUERY_KEY } from "../../../query/keys.constant";
+import { QUERY_KEYS } from "../../../query/keys.constant";
 
 /**
  * 컴포넌트 개요 : Todo 메인 페이지에서 제목과 내용을 입력하는 영역
@@ -19,11 +19,7 @@ import { QUERY_KEY } from "../../../query/keys.constant";
 function Input() {
   const queryClient = useQueryClient();
 
-  const { mutate: addMutate } = useAddMutation({
-    onSuccess: () => {
-      queryClient.invalidateQueries(QUERY_KEY);
-    },
-  });
+  const { mutate: addMutate } = useAddMutation();
 
   // 컴포넌트 내부에서 사용할 state 2개(제목, 내용) 정의
   const [title, setTitle] = useState("");
@@ -75,7 +71,11 @@ function Input() {
 
     // todo를 추가하는 reducer 호출
     // 인자 : payload
-    addMutate(newTodo);
+    addMutate(newTodo, {
+      onSuccess: () => {
+        queryClient.invalidateQueries(QUERY_KEYS);
+      },
+    });
 
     // state 두 개를 초기화
     setTitle("");

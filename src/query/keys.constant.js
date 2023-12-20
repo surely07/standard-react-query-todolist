@@ -1,1 +1,3 @@
-export const QUERY_KEY = "todos";
+export const QUERY_KEYS = {
+  TODOS: "todos",
+};
