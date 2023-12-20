@@ -28,7 +28,7 @@ function DetailBox() {
       alert("올바르지 않은 접근입니다. 메인페이지로 이동합니다.");
       navigate("/");
     }
-  }, []);
+  }, [filteredTodos.length, navigate]);
 
   // todo 객체를 얻어옴(filteredTodos는 무조건 요소가 1개여야 함)
   const todo = filteredTodos[0];
